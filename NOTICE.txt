@@ -1,0 +1,5 @@
+twitchatbeat
+Copyright {year} Maxence Younsi
+
+This product includes software developed by The Apache Software
+Foundation (http://www.apache.org/).
