@@ -2,8 +2,133 @@
   title: twitchatbeat
   description:
   fields:
-    - name: counter
-      type: long
+    - name: event_type
+      type: keyword
       required: true
       description: >
-        PLEASE UPDATE DOCUMENTATION
+        Type of the twitch message that triggered the event
+    - name: msg.raw
+      type: text
+      required: true
+      description: >
+        Raw message as text
+    - name: msg.raw_json
+      type: object
+      required: true
+      description: >
+        Raw message as JSON
+    - name: user.id
+      type: unsigned_long
+      required: true
+      description: >
+        Twitch id of the user sending the message
+    - name: user.name
+      type: keyword
+      required: false
+      description: >
+        Name of the user sending the message
+    - name: user.display_name
+      type: keyword
+      required: false
+      description: >
+        Display name of the user sending the message
+    - name: user.color
+      type: text
+      required: false
+      description: >
+        Color of the display name of the user sending the message
+    - name: user.badges
+      type: keyword
+      required: false
+      description: >
+        Badges owned by the user sending the message
+    - name: msg.type
+      type: byte
+      required: false
+      description: >
+        Type of the message as a number
+    - name: msg.raw_type
+      type: keyword
+      required: false
+      description: >
+        Type of the message as text
+    - name: msg.tags
+      type: keyword
+      required: false
+      description: >
+        Tags of the message
+    - name: msg.text
+      type: text
+      required: false
+      description: >
+        Text content of the message
+    - name: msg.channel
+      type: keyword
+      required: false
+      description: >
+        Channel the message was sent on
+    - name: msg.room_id
+      type: unsigned_long
+      required: false
+      description: >
+        Room ID the message was sent on
+    - name: msg.id
+      type: unsigned_long
+      required: false
+      description: >
+        ID of the message
+    - name: msg.time
+      type: date
+      required: false
+      description: >
+        Date the message was sent on
+    - name: msg.emotes
+      type: keyword
+      required: false
+      description: >
+        Emotes contained in the message
+    - name: msg.bits
+      type: unsigned_long
+      required: false
+      description: >
+        Bits gifted with the message
+    - name: msg.action
+      type: boolean
+      required: false
+      description: >
+        Whether the message is an action or not
+    - name: msg.first_message
+      type: boolean
+      required: false
+      description: >
+        Whether the message is the user's first message
+    - name: msg.ban_duration
+      type: unsigned_long
+      required: false
+      description: >
+        Duration of the ban of the targeted user
+    - name: msg.target_user_id
+      type: unsigned_long
+      required: false
+      description: >
+        Twitch ID of the targeted user
+    - name: msg.target_user_name
+      type: keyword
+      required: false
+      description: >
+        Username of the targeted user
+    - name: msg.params
+      type: keyword
+      required: false
+      description: >
+        Parameters of the message
+    - name: msg.msg_id
+      type: unsigned_long
+      required: false
+      description: >
+        Message ID of the message
+    - name: msg.sys_msg
+      type: text
+      required: false
+      description: >
+        System message

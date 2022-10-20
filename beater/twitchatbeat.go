@@ -2,11 +2,12 @@ package beater
 
 import (
 	"fmt"
-	"time"
-
 	"github.com/elastic/beats/v7/libbeat/beat"
 	"github.com/elastic/beats/v7/libbeat/common"
 	"github.com/elastic/beats/v7/libbeat/logp"
+	"github.com/mxyns/justlog/bot"
+	"github.com/mxyns/justlog/helix"
+	"time"
 
 	"github.com/mxyns/twitchatbeat/config"
 )
@@ -14,6 +15,7 @@ import (
 // twitchatbeat configuration.
 type twitchatbeat struct {
 	done   chan struct{}
+	events []beat.Event
 	config config.Config
 	client beat.Client
 }
@@ -27,6 +29,7 @@ func New(b *beat.Beat, cfg *common.Config) (beat.Beater, error) {
 
 	bt := &twitchatbeat{
 		done:   make(chan struct{}),
+		events: make([]beat.Event, c.QueueCapacity),
 		config: c,
 	}
 	return bt, nil
@@ -42,26 +45,38 @@ func (bt *twitchatbeat) Run(b *beat.Beat) error {
 		return err
 	}
 
+	go RunBot(bt, b)
+
 	ticker := time.NewTicker(bt.config.Period)
-	counter := 1
 	for {
 		select {
 		case <-bt.done:
 			return nil
 		case <-ticker.C:
+			bt.client.PublishAll(bt.events)
+			bt.ClearEvents()
 		}
-
-		event := beat.Event{
-			Timestamp: time.Now(),
-			Fields: common.MapStr{
-				"type":    b.Info.Name,
-				"counter": counter,
-			},
-		}
-		bt.client.Publish(event)
-		logp.Info("Event sent")
-		counter++
 	}
+}
+
+func RunBot(bt *twitchatbeat, b *beat.Beat) {
+
+	cfg := config.ConvertConfiguration(&bt.config)
+
+	elasticLogger := NewElasticLogger(b, bt)
+	helixClient := helix.NewClient(cfg.ClientID, cfg.ClientSecret)
+	go helixClient.StartRefreshTokenRoutine()
+
+	newBot := bot.NewBot(cfg, &helixClient, &elasticLogger)
+	newBot.Connect()
+}
+
+func (bt *twitchatbeat) ClearEvents() {
+	bt.events = make([]beat.Event, bt.config.QueueCapacity)
+}
+
+func (bt *twitchatbeat) AddEvent(event beat.Event) {
+	bt.events = append(bt.events, event)
 }
 
 // Stop stops twitchatbeat.

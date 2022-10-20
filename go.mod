@@ -23,9 +23,10 @@ require (
 	github.com/blakesmith/ar v0.0.0-20190502131153-809d4375e1fb
 	github.com/cavaliergopher/rpm v1.2.0
 	github.com/elastic/beats/v7 v7.17.6
+	github.com/gempir/go-twitch-irc/v3 v3.0.0
 	github.com/magefile/mage v1.11.0
 	github.com/mitchellh/gox v1.0.1
-	github.com/mxyns/justlog v1.0.1
+	github.com/mxyns/justlog v1.0.3
 	github.com/pierrre/gotestcover v0.0.0-20160517101806-924dca7d15f0
 	github.com/tsg/go-daemon v0.0.0-20200207173439-e704b93fd89b
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
@@ -67,7 +68,6 @@ require (
 	github.com/elastic/gosigar v0.14.2 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.4 // indirect
-	github.com/gempir/go-twitch-irc/v3 v3.0.0 // indirect
 	github.com/go-logr/logr v0.4.0 // indirect
 	github.com/go-ole/go-ole v1.2.5-0.20190920104607-14974a1cf647 // indirect
 	github.com/go-sourcemap/sourcemap v2.1.2+incompatible // indirect

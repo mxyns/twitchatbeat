@@ -771,8 +771,8 @@ github.com/munnerz/goautoneg v0.0.0-20120707110453-a547fc61f48d/go.mod h1:+n7T8m
 github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822/go.mod h1:+n7T8mK8HuQTcFwEeznm/DIxMOiR9yIdICNftLE1DvQ=
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f/go.mod h1:ZdcZmHo+o7JKHSa8/e818NopupXU1YMK5fe1lsApnBw=
-github.com/mxyns/justlog v1.0.1 h1:ruG9qXgI0yCJUn/57VwuSk5h9srcJvAkecNF0S0e1Ts=
-github.com/mxyns/justlog v1.0.1/go.mod h1:PPg2LTBj7O+i5XEIgPJkzUkW72Ricfg39Bulhw0ieIA=
+github.com/mxyns/justlog v1.0.3 h1:UFJbrD6tbJhsHiBnrE0teuFqDLFc4+kXu6lxUFmYI1g=
+github.com/mxyns/justlog v1.0.3/go.mod h1:PPg2LTBj7O+i5XEIgPJkzUkW72Ricfg39Bulhw0ieIA=
 github.com/ncw/swift v1.0.47/go.mod h1:23YIA4yWVnGwv2dQlN4bB7egfYX6YLn0Yo/S6zZO/ZM=
 github.com/nicklaw5/helix v1.25.0 h1:Mrz537izZVsGdM3I46uGAAlslj61frgkhS/9xQqyT/M=
 github.com/nicklaw5/helix v1.25.0/go.mod h1:yvXZFapT6afIoxnAvlWiJiUMsYnoHl7tNs+t0bloAMw=
