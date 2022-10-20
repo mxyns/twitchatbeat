@@ -18,7 +18,7 @@
       description: >
         Raw message as JSON
     - name: user.id
-      type: unsigned_long
+      type: long
       required: true
       description: >
         Twitch id of the user sending the message
@@ -68,12 +68,12 @@
       description: >
         Channel the message was sent on
     - name: msg.room_id
-      type: unsigned_long
+      type: long
       required: false
       description: >
         Room ID the message was sent on
     - name: msg.id
-      type: unsigned_long
+      type: long
       required: false
       description: >
         ID of the message
@@ -88,7 +88,7 @@
       description: >
         Emotes contained in the message
     - name: msg.bits
-      type: unsigned_long
+      type: long
       required: false
       description: >
         Bits gifted with the message
@@ -103,12 +103,12 @@
       description: >
         Whether the message is the user's first message
     - name: msg.ban_duration
-      type: unsigned_long
+      type: long
       required: false
       description: >
         Duration of the ban of the targeted user
     - name: msg.target_user_id
-      type: unsigned_long
+      type: long
       required: false
       description: >
         Twitch ID of the targeted user
@@ -123,7 +123,7 @@
       description: >
         Parameters of the message
     - name: msg.msg_id
-      type: unsigned_long
+      type: long
       required: false
       description: >
         Message ID of the message
