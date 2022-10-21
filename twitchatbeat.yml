@@ -1,50 +1,20 @@
 ################### {Beat} Configuration Example #########################
 
 ############################# {Beat} ######################################
-
 twitchatbeat:
   # Defines how often an event is sent to the output
   period: 16s
   botVerified: false
   adminAPIKey: "noshot"
-  username: "501_extragelar_105"
-  oauth: "sjk8n3i6ufa1vl6snqoue4qjodhte8"
+  username: "username"
+  oauth: "oauth"
   listenAddress: ":8025"
   admins:
-    - "501_extragelar_105"
+    - "admin"
   channels:
     - "834781042"
-    - "435049951"
-    - "15310631"
-    - "71092938"
-    - "92038375"
-    - "32402794"
-    - "445529741"
-    - "469348555"
-    - "454148646"
-    - "132230344"
-    - "43539324"
-    - "122887284"
-    - "48389176"
-    - "583931625"
-    - "132651109"
-    - "123217703"
-    - "86131599"
-    - "400495412"
-    - "26991127"
-    - "833690132"
-    - "61489476"
-    - "19571641"
-    - "97782954"
-    - "57519051"
-    - "47180661"
-    - "557491902"
-    - "79792848"
-    - "91137296"
-    - "40114747"
-    - "48243486"
-  clientID: "8wjt5uw9jb8i93qbu8bdsdg3wvgaqk"
-  clientSecret: "h8qpazr33g6ewxf0qfzw0xssjehiz4"
+  clientID: "clientID"
+  clientSecret: "secret"
   logLevel: "info"
   optOut:
 
