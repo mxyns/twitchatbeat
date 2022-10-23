@@ -11,35 +11,39 @@ import (
 )
 
 type Config struct {
-	Period        time.Duration   `config:"period"`
-	QueueCapacity uint64          `config:"queueCapacity"`
-	BotVerified   bool            `config:"botVerified"`
-	AdminAPIKey   string          `config:"adminAPIKey"`
-	Username      string          `config:"username"`
-	Oauth         string          `config:"oauth"`
-	ListenAddress string          `config:"listenAddress"`
-	Admins        []string        `config:"admins"`
-	Channels      []string        `config:"channels"`
-	ClientID      string          `config:"clientID"`
-	ClientSecret  string          `config:"clientSecret"`
-	LogLevel      string          `config:"logLevel"`
-	OptOut        map[string]bool `config:"optOut"`
+	Period             time.Duration   `config:"period"`
+	StreamStatusPeriod time.Duration   `config:"streamStatusCheckPeriod"`
+	StreamStatusOffset time.Duration   `config:"streamStatusCheckOffset"`
+	QueueCapacity      uint64          `config:"queueCapacity"`
+	BotVerified        bool            `config:"botVerified"`
+	AdminAPIKey        string          `config:"adminAPIKey"`
+	Username           string          `config:"username"`
+	Oauth              string          `config:"oauth"`
+	ListenAddress      string          `config:"listenAddress"`
+	Admins             []string        `config:"admins"`
+	Channels           []string        `config:"channels"`
+	ClientID           string          `config:"clientID"`
+	ClientSecret       string          `config:"clientSecret"`
+	LogLevel           string          `config:"logLevel"`
+	OptOut             map[string]bool `config:"optOut"`
 }
 
 var DefaultConfig = Config{
-	Period:        16 * time.Second,
-	QueueCapacity: 1024,
-	BotVerified:   true,
-	AdminAPIKey:   "noshot",
-	Username:      "Username",
-	Oauth:         "OAuth",
-	ListenAddress: ":8025",
-	Admins:        []string{},
-	Channels:      []string{},
-	ClientID:      "ClientId",
-	ClientSecret:  "ClientSecret",
-	LogLevel:      "info",
-	OptOut:        map[string]bool{},
+	Period:             16 * time.Second,
+	StreamStatusPeriod: 16 * time.Second,
+	StreamStatusOffset: 8 * time.Second,
+	QueueCapacity:      1024,
+	BotVerified:        true,
+	AdminAPIKey:        "noshot",
+	Username:           "Username",
+	Oauth:              "OAuth",
+	ListenAddress:      ":8025",
+	Admins:             []string{},
+	Channels:           []string{},
+	ClientID:           "ClientId",
+	ClientSecret:       "ClientSecret",
+	LogLevel:           "info",
+	OptOut:             map[string]bool{},
 }
 
 func ConvertConfiguration(config *Config) *botconfig.Config {

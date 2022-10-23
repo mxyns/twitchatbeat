@@ -14,10 +14,12 @@ import (
 
 // twitchatbeat configuration.
 type twitchatbeat struct {
-	done   chan struct{}
-	events []beat.Event
-	config config.Config
-	client beat.Client
+	done            chan struct{}
+	events          []beat.Event
+	config          config.Config
+	client          beat.Client
+	helixClient     helix.Client
+	helixClientInit bool
 }
 
 // New creates an instance of twitchatbeat.
@@ -28,9 +30,10 @@ func New(b *beat.Beat, cfg *common.Config) (beat.Beater, error) {
 	}
 
 	bt := &twitchatbeat{
-		done:   make(chan struct{}),
-		events: make([]beat.Event, c.QueueCapacity),
-		config: c,
+		done:            make(chan struct{}),
+		events:          make([]beat.Event, c.QueueCapacity),
+		config:          c,
+		helixClientInit: false,
 	}
 	return bt, nil
 }
@@ -47,7 +50,17 @@ func (bt *twitchatbeat) Run(b *beat.Beat) error {
 
 	go RunBot(bt, b)
 
+	var streamStatusTicker *time.Ticker
+	if bt.config.StreamStatusOffset < 0 {
+		streamStatusTicker = time.NewTicker(bt.config.StreamStatusPeriod)
+		time.Sleep(-bt.config.StreamStatusOffset)
+	}
 	ticker := time.NewTicker(bt.config.Period)
+	if bt.config.StreamStatusOffset > 0 {
+		time.Sleep(bt.config.StreamStatusOffset)
+		streamStatusTicker = time.NewTicker(bt.config.StreamStatusPeriod)
+	}
+
 	for {
 		select {
 		case <-bt.done:
@@ -55,6 +68,9 @@ func (bt *twitchatbeat) Run(b *beat.Beat) error {
 		case <-ticker.C:
 			bt.client.PublishAll(bt.events)
 			bt.ClearEvents()
+		case <-streamStatusTicker.C:
+			bt.PushStreamStatuses(b)
+
 		}
 	}
 }
@@ -64,10 +80,11 @@ func RunBot(bt *twitchatbeat, b *beat.Beat) {
 	cfg := config.ConvertConfiguration(&bt.config)
 
 	elasticLogger := NewElasticLogger(b, bt)
-	helixClient := helix.NewClient(cfg.ClientID, cfg.ClientSecret)
-	go helixClient.StartRefreshTokenRoutine()
+	bt.helixClient = helix.NewClient(cfg.ClientID, cfg.ClientSecret)
+	go bt.helixClient.StartRefreshTokenRoutine()
+	bt.helixClientInit = true
 
-	newBot := bot.NewBot(cfg, &helixClient, &elasticLogger)
+	newBot := bot.NewBot(cfg, &bt.helixClient, &elasticLogger)
 	newBot.Connect()
 }
 
@@ -83,4 +100,47 @@ func (bt *twitchatbeat) AddEvent(event beat.Event) {
 func (bt *twitchatbeat) Stop() {
 	bt.client.Close()
 	close(bt.done)
+}
+
+func (bt *twitchatbeat) GetStreamStatuses() map[string]helix.ChannelData {
+	if !bt.helixClientInit {
+		return nil
+	}
+
+	statuses, err := bt.helixClient.GetChannelInformationByChannelIds(bt.config.Channels)
+	if err != nil {
+		logp.Error(err)
+		return nil
+	}
+
+	return statuses
+}
+
+func (bt *twitchatbeat) PushStreamStatuses(b *beat.Beat) {
+
+	statuses := bt.GetStreamStatuses()
+	events := make([]beat.Event, len(statuses))
+	for _, status := range statuses {
+		event := beat.Event{
+			Timestamp: time.Now(),
+			Fields: common.MapStr{
+				"type":                       b.Info.Name,
+				"event_type":                 []string{"ChannelStatus", "Channel"},
+				"status.channel_id":          status.BroadcasterID,
+				"status.channel_name":        status.BroadcasterName,
+				"status.channel_language":    status.BroadcasterLanguage,
+				"status.stream.title":        status.Title,
+				"status.stream.game_id":      status.GameID,
+				"status.stream.game_name":    status.GameName,
+				"status.stream.status_valid": status.StreamStatus,
+				"status.stream.is_live":      status.IsLive,
+				"status.stream.started_at":   status.StartedAt,
+				"status.stream.delay":        status.Delay,
+			},
+		}
+
+		events = append(events, event)
+	}
+
+	bt.client.PublishAll(events)
 }

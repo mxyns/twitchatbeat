@@ -14684,15 +14684,435 @@ alias to: process.executable
 None
 
 
-*`counter`*::
+*`event_type`*::
 +
 --
-PLEASE UPDATE DOCUMENTATION
+Type of the twitch message that triggered the event
+
+
+type: keyword
+
+required: True
+
+--
+
+*`msg.raw`*::
++
+--
+Raw message as text
+
+
+type: text
+
+required: False
+
+--
+
+*`msg.raw_json`*::
++
+--
+Raw message as JSON
+
+
+type: object
+
+required: False
+
+--
+
+*`user.id`*::
++
+--
+Twitch id of the user sending the message
 
 
 type: long
 
-required: True
+required: False
+
+--
+
+*`user.name`*::
++
+--
+Name of the user sending the message
+
+
+type: keyword
+
+required: False
+
+--
+
+*`user.display_name`*::
++
+--
+Display name of the user sending the message
+
+
+type: keyword
+
+required: False
+
+--
+
+*`user.color`*::
++
+--
+Color of the display name of the user sending the message
+
+
+type: text
+
+required: False
+
+--
+
+*`user.badges`*::
++
+--
+Badges owned by the user sending the message
+
+
+type: keyword
+
+required: False
+
+--
+
+*`msg.type`*::
++
+--
+Type of the message as a number
+
+
+type: byte
+
+required: False
+
+--
+
+*`msg.raw_type`*::
++
+--
+Type of the message as text
+
+
+type: keyword
+
+required: False
+
+--
+
+*`msg.tags`*::
++
+--
+Tags of the message
+
+
+type: keyword
+
+required: False
+
+--
+
+*`msg.text`*::
++
+--
+Text content of the message
+
+
+type: text
+
+required: False
+
+--
+
+*`msg.channel`*::
++
+--
+Channel the message was sent on
+
+
+type: keyword
+
+required: False
+
+--
+
+*`msg.room_id`*::
++
+--
+Room ID the message was sent on
+
+
+type: long
+
+required: False
+
+--
+
+*`msg.id`*::
++
+--
+ID of the message
+
+
+type: long
+
+required: False
+
+--
+
+*`msg.time`*::
++
+--
+Date the message was sent on
+
+
+type: date
+
+required: False
+
+--
+
+*`msg.emotes`*::
++
+--
+Emotes contained in the message
+
+
+type: keyword
+
+required: False
+
+--
+
+*`msg.bits`*::
++
+--
+Bits gifted with the message
+
+
+type: long
+
+required: False
+
+--
+
+*`msg.action`*::
++
+--
+Whether the message is an action or not
+
+
+type: boolean
+
+required: False
+
+--
+
+*`msg.first_message`*::
++
+--
+Whether the message is the user's first message
+
+
+type: boolean
+
+required: False
+
+--
+
+*`msg.ban_duration`*::
++
+--
+Duration of the ban of the targeted user
+
+
+type: long
+
+required: False
+
+--
+
+*`msg.target_user_id`*::
++
+--
+Twitch ID of the targeted user
+
+
+type: long
+
+required: False
+
+--
+
+*`msg.target_user_name`*::
++
+--
+Username of the targeted user
+
+
+type: keyword
+
+required: False
+
+--
+
+*`msg.params`*::
++
+--
+Parameters of the message
+
+
+type: keyword
+
+required: False
+
+--
+
+*`msg.msg_id`*::
++
+--
+Message ID of the message
+
+
+type: long
+
+required: False
+
+--
+
+*`msg.sys_msg`*::
++
+--
+System message
+
+
+type: text
+
+required: False
+
+--
+
+*`status.channel_id`*::
++
+--
+Channel ID the status report is about
+
+
+type: long
+
+required: False
+
+--
+
+*`status.channel_name`*::
++
+--
+Channel Name the status report is about
+
+
+type: keyword
+
+required: False
+
+--
+
+*`status.channel_language`*::
++
+--
+Language of the channel the status report is about
+
+
+type: keyword
+
+required: False
+
+--
+
+*`status.stream.title`*::
++
+--
+Title of the stream of the channel
+
+
+type: text
+
+required: False
+
+--
+
+*`status.stream.game_id`*::
++
+--
+Id of the game on the stream of the channel
+
+
+type: long
+
+required: False
+
+--
+
+*`status.stream.game_name`*::
++
+--
+Name of the game on the stream of the channel
+
+
+type: keyword
+
+required: False
+
+--
+
+*`status.stream.status_valid`*::
++
+--
+Indicates if the stream's 'is_live' field and 'started_at' field are reliable
+
+
+type: boolean
+
+required: False
+
+--
+
+*`status.stream.is_live`*::
++
+--
+Indicates if the broadcaster is currently live
+
+
+type: boolean
+
+required: False
+
+--
+
+*`status.stream.started_at`*::
++
+--
+Date the streams was started on
+
+
+type: boolean
+
+required: date
+
+--
+
+*`status.stream.delay`*::
++
+--
+Delay of the stream set by the broadcaster
+
+
+type: long
+
+required: date
 
 --
 

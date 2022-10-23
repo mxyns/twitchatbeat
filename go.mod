@@ -26,7 +26,7 @@ require (
 	github.com/gempir/go-twitch-irc/v3 v3.0.0
 	github.com/magefile/mage v1.11.0
 	github.com/mitchellh/gox v1.0.1
-	github.com/mxyns/justlog v1.0.3
+	github.com/mxyns/justlog v1.0.4
 	github.com/pierrre/gotestcover v0.0.0-20160517101806-924dca7d15f0
 	github.com/tsg/go-daemon v0.0.0-20200207173439-e704b93fd89b
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616

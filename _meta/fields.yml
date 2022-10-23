@@ -9,17 +9,17 @@
         Type of the twitch message that triggered the event
     - name: msg.raw
       type: text
-      required: true
+      required: false
       description: >
         Raw message as text
     - name: msg.raw_json
       type: object
-      required: true
+      required: false
       description: >
         Raw message as JSON
     - name: user.id
       type: long
-      required: true
+      required: false
       description: >
         Twitch id of the user sending the message
     - name: user.name
@@ -132,3 +132,53 @@
       required: false
       description: >
         System message
+    - name: status.channel_id
+      type: long
+      required: false
+      description: >
+        Channel ID the status report is about
+    - name: status.channel_name
+      type: keyword
+      required: false
+      description: >
+        Channel Name the status report is about
+    - name: status.channel_language
+      type: keyword
+      required: false
+      description: >
+        Language of the channel the status report is about
+    - name: status.stream.title
+      type: text
+      required: false
+      description: >
+        Title of the stream of the channel
+    - name: status.stream.game_id
+      type: long
+      required: false
+      description: >
+        Id of the game on the stream of the channel
+    - name: status.stream.game_name
+      type: keyword
+      required: false
+      description: >
+        Name of the game on the stream of the channel
+    - name: status.stream.status_valid
+      type: boolean
+      required: false
+      description: >
+        Indicates if the stream's 'is_live' field and 'started_at' field are reliable
+    - name: status.stream.is_live
+      type: boolean
+      required: false
+      description: >
+        Indicates if the broadcaster is currently live
+    - name: status.stream.started_at
+      type: boolean
+      required: date
+      description: >
+        Date the streams was started on
+    - name: status.stream.delay
+      type: long
+      required: date
+      description: >
+        Delay of the stream set by the broadcaster

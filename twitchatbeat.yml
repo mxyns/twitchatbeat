@@ -1,22 +1,10 @@
 ################### {Beat} Configuration Example #########################
 
 ############################# {Beat} ######################################
+
 twitchatbeat:
   # Defines how often an event is sent to the output
-  period: 16s
-  botVerified: false
-  adminAPIKey: "noshot"
-  username: "username"
-  oauth: "oauth"
-  listenAddress: ":8025"
-  admins:
-    - "admin"
-  channels:
-    - "834781042"
-  clientID: "clientID"
-  clientSecret: "secret"
-  logLevel: "info"
-  optOut:
+  period: 1s
 
 # ================================== General ===================================
 
