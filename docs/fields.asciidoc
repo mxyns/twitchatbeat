@@ -14996,7 +14996,7 @@ required: False
 
 --
 
-*`status.channel_id`*::
+*`channel.status.channel_id`*::
 +
 --
 Channel ID the status report is about
@@ -15008,7 +15008,7 @@ required: False
 
 --
 
-*`status.channel_name`*::
+*`channel.status.channel_name`*::
 +
 --
 Channel Name the status report is about
@@ -15020,7 +15020,7 @@ required: False
 
 --
 
-*`status.channel_language`*::
+*`channel.status.channel_language`*::
 +
 --
 Language of the channel the status report is about
@@ -15032,7 +15032,7 @@ required: False
 
 --
 
-*`status.stream.title`*::
+*`channel.status.stream.title`*::
 +
 --
 Title of the stream of the channel
@@ -15044,7 +15044,7 @@ required: False
 
 --
 
-*`status.stream.game_id`*::
+*`channel.status.stream.game_id`*::
 +
 --
 Id of the game on the stream of the channel
@@ -15056,7 +15056,7 @@ required: False
 
 --
 
-*`status.stream.game_name`*::
+*`channel.status.stream.game_name`*::
 +
 --
 Name of the game on the stream of the channel
@@ -15068,7 +15068,7 @@ required: False
 
 --
 
-*`status.stream.status_valid`*::
+*`channel.status.stream.status_valid`*::
 +
 --
 Indicates if the stream's 'is_live' field and 'started_at' field are reliable
@@ -15080,7 +15080,7 @@ required: False
 
 --
 
-*`status.stream.is_live`*::
+*`channel.status.stream.is_live`*::
 +
 --
 Indicates if the broadcaster is currently live
@@ -15092,7 +15092,7 @@ required: False
 
 --
 
-*`status.stream.started_at`*::
+*`channel.status.stream.started_at`*::
 +
 --
 Date the streams was started on
@@ -15100,11 +15100,11 @@ Date the streams was started on
 
 type: boolean
 
-required: date
+required: False
 
 --
 
-*`status.stream.delay`*::
+*`channel.status.stream.delay`*::
 +
 --
 Delay of the stream set by the broadcaster
@@ -15112,7 +15112,7 @@ Delay of the stream set by the broadcaster
 
 type: long
 
-required: date
+required: False
 
 --
 
