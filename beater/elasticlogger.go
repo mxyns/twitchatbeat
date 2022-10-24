@@ -50,7 +50,7 @@ func (l *ElasticLogger) LogPrivateMessageForUser(user twitch.User, message twitc
 			"msg.first_message": message.FirstMessage,
 		},
 	}
-	l.bt.AddEvent(event)
+	l.bt.AddMessageEvent(l.b, event)
 	logp.Info("Event queued")
 
 	return nil
@@ -78,7 +78,7 @@ func (l *ElasticLogger) LogClearchatMessageForUser(userID string, message twitch
 			"msg.target_user_name": message.TargetUsername,
 		},
 	}
-	l.bt.AddEvent(event)
+	l.bt.AddMessageEvent(l.b, event)
 	logp.Info("Event queued")
 	return nil
 }
@@ -111,7 +111,7 @@ func (l *ElasticLogger) LogUserNoticeMessageForUser(userID string, message twitc
 			"msg.sys_msg":       message.SystemMsg,
 		},
 	}
-	l.bt.AddEvent(event)
+	l.bt.AddMessageEvent(l.b, event)
 	logp.Info("Event queued")
 	return nil
 }
@@ -144,7 +144,7 @@ func (l *ElasticLogger) LogPrivateMessageForChannel(message twitch.PrivateMessag
 			"msg.first_message": message.FirstMessage,
 		},
 	}
-	l.bt.AddEvent(event)
+	l.bt.AddMessageEvent(l.b, event)
 	logp.Info("Event queued")
 
 	return nil
@@ -172,7 +172,7 @@ func (l *ElasticLogger) LogClearchatMessageForChannel(message twitch.ClearChatMe
 			"msg.target_user_name": message.TargetUsername,
 		},
 	}
-	l.bt.AddEvent(event)
+	l.bt.AddMessageEvent(l.b, event)
 	logp.Info("Event queued")
 	return nil
 }
@@ -205,7 +205,7 @@ func (l *ElasticLogger) LogUserNoticeMessageForChannel(message twitch.UserNotice
 			"msg.sys_msg":       message.SystemMsg,
 		},
 	}
-	l.bt.AddEvent(event)
+	l.bt.AddMessageEvent(l.b, event)
 	logp.Info("Event queued")
 	return nil
 }

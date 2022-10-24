@@ -13,11 +13,18 @@ import (
 )
 
 // twitchatbeat configuration.
+
+type CacheStreamStatus struct {
+	streamStatuses map[string]helix.ChannelData
+	timestamp      time.Time
+}
+
 type twitchatbeat struct {
 	done            chan struct{}
 	events          []beat.Event
 	config          config.Config
 	client          beat.Client
+	StreamStatuses  CacheStreamStatus
 	helixClient     helix.Client
 	helixClientInit bool
 }
@@ -30,8 +37,12 @@ func New(b *beat.Beat, cfg *common.Config) (beat.Beater, error) {
 	}
 
 	bt := &twitchatbeat{
-		done:            make(chan struct{}),
-		events:          make([]beat.Event, 0, c.QueueCapacity),
+		done:   make(chan struct{}),
+		events: make([]beat.Event, 0, c.QueueCapacity),
+		StreamStatuses: CacheStreamStatus{
+			streamStatuses: nil,
+			timestamp:      time.Time{},
+		},
 		config:          c,
 		helixClientInit: false,
 	}
@@ -82,6 +93,20 @@ func (bt *twitchatbeat) ClearEvents() {
 	bt.events = make([]beat.Event, 0, bt.config.QueueCapacity)
 }
 
+func (bt *twitchatbeat) AddMessageEvent(b *beat.Beat, event beat.Event) {
+
+	channelName, err := event.Fields.GetValue("msg.channel")
+	if err == nil {
+		usernames, err := bt.helixClient.GetUsersByUsernames([]string{channelName.(string)})
+		if err == nil {
+			status := bt.GetStreamStatuses()[usernames[channelName.(string)].ID]
+			event.Fields.DeepUpdateNoOverwrite(StreamStatusFields(b, &status))
+		}
+	}
+
+	bt.AddEvent(event)
+}
+
 func (bt *twitchatbeat) AddEvent(event beat.Event) {
 	bt.events = append(bt.events, event)
 }
@@ -97,13 +122,34 @@ func (bt *twitchatbeat) GetStreamStatuses() map[string]helix.ChannelData {
 		return nil
 	}
 
-	statuses, err := bt.helixClient.GetChannelInformationByChannelIds(bt.config.Channels)
-	if err != nil {
-		logp.Error(err)
-		return nil
+	if bt.StreamStatuses.timestamp.IsZero() || time.Now().Sub(bt.StreamStatuses.timestamp) > bt.config.Period/2 {
+		statuses, err := bt.helixClient.GetChannelInformationByChannelIds(bt.config.Channels)
+		if err != nil {
+			logp.Error(err)
+			return nil
+		}
+
+		bt.StreamStatuses.streamStatuses = statuses
 	}
 
-	return statuses
+	return bt.StreamStatuses.streamStatuses
+}
+
+func StreamStatusFields(b *beat.Beat, status *helix.ChannelData) common.MapStr {
+	return common.MapStr{
+		"type":                               b.Info.Name,
+		"event_type":                         []string{"ChannelStatus", "Channel"},
+		"channel.status.channel_id":          status.BroadcasterID,
+		"channel.status.channel_name":        status.BroadcasterName,
+		"channel.status.channel_language":    status.BroadcasterLanguage,
+		"channel.status.stream.title":        status.Title,
+		"channel.status.stream.game_id":      status.GameID,
+		"channel.status.stream.game_name":    status.GameName,
+		"channel.status.stream.status_valid": status.StreamStatus,
+		"channel.status.stream.is_live":      status.IsLive,
+		"channel.status.stream.started_at":   status.StartedAt.Time,
+		"channel.status.stream.delay":        status.Delay,
+	}
 }
 
 func (bt *twitchatbeat) PushStreamStatuses(b *beat.Beat) {
@@ -113,23 +159,10 @@ func (bt *twitchatbeat) PushStreamStatuses(b *beat.Beat) {
 	for _, status := range statuses {
 		event := beat.Event{
 			Timestamp: time.Now(),
-			Fields: common.MapStr{
-				"type":                               b.Info.Name,
-				"event_type":                         []string{"ChannelStatus", "Channel"},
-				"channel.status.channel_id":          status.BroadcasterID,
-				"channel.status.channel_name":        status.BroadcasterName,
-				"channel.status.channel_language":    status.BroadcasterLanguage,
-				"channel.status.stream.title":        status.Title,
-				"channel.status.stream.game_id":      status.GameID,
-				"channel.status.stream.game_name":    status.GameName,
-				"channel.status.stream.status_valid": status.StreamStatus,
-				"channel.status.stream.is_live":      status.IsLive,
-				"channel.status.stream.started_at":   status.StartedAt.Time,
-				"channel.status.stream.delay":        status.Delay,
-			},
+			Fields:    StreamStatusFields(b, &status),
 		}
 
-		bt.events = append(bt.events, event)
+		bt.AddEvent(event)
 		logp.Info("Status Report Event: %v", event)
 	}
 }
